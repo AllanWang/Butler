@@ -1,0 +1,6 @@
+include 'butler'
+include 'butler-integration-test'
+include 'butler-annotations'
+include 'butler-compiler'
+
+rootProject.name = 'butler-parent'

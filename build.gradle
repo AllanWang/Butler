@@ -1,0 +1,30 @@
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    ext.deps = [
+            junit : 'junit:junit:4.12',
+            'auto': [
+                    'service': 'com.google.auto.service:auto-service:1.0-rc3',
+                    'common' : 'com.google.auto:auto-common:0.8',
+            ]
+    ]
+}
+
+subprojects { project ->
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    group = GROUP
+    version = VERSION_NAME
+    repositories {
+        mavenCentral()
+    }
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+}

@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile deps.auto.common
+    compileOnly deps.auto.service
+    compile files("${System.getProperty('java.home')}/../lib/tools.jar")
+}
