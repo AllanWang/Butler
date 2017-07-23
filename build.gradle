@@ -4,12 +4,22 @@ repositories {
 
 buildscript {
     ext.deps = [
-            junit : 'junit:junit:4.12',
-            'auto': [
+            junit   : 'junit:junit:4.12',
+            auto    : [
                     'service': 'com.google.auto.service:auto-service:1.0-rc3',
                     'common' : 'com.google.auto:auto-common:0.8',
-            ]
+            ],
+            apt     : 'net.ltgt.gradle:gradle-apt-plugin:0.10',
+            'gTest': [
+                    'truth'       : 'com.google.truth:truth:0.31',
+                    'testCompile': 'com.google.testing.compile:compile-testing:0.11'
+            ],
+            guava   : 'com.google.guava:guava:21.0'
     ]
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 subprojects { project ->
@@ -21,10 +31,20 @@ subprojects { project ->
     version = VERSION_NAME
     repositories {
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     buildscript {
         repositories {
             mavenCentral()
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+        }
+        dependencies {
+            classpath deps.apt
         }
     }
+    rootProject.clean.dependsOn tasks.matching { it.name == "clean" }
 }

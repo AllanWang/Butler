@@ -1,6 +1,6 @@
 package ca.allanwang.butler.base;
 
-import ca.allanwang.butler.callsuper.CallSuper;
+import ca.allanwang.butler.CallSuper;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.Tree;

@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
  * Created by Allan Wang on 2017-05-10.
  */
 @Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface CallSuper {
 }

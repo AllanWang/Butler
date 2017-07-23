@@ -1,8 +1,10 @@
 apply plugin: 'java'
+apply plugin: "net.ltgt.apt"
 
 dependencies {
-    compile project(':butler')
-    annotationProcessor project(':butler-compiler')
+    compile project(':butler-annotations')
+
+    apt project(':butler-compiler')
 
     testCompile deps.junit
 }

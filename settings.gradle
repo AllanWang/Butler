@@ -2,5 +2,7 @@ include 'butler'
 include 'butler-integration-test'
 include 'butler-annotations'
 include 'butler-compiler'
+include 'butler-lint'
 
 rootProject.name = 'butler-parent'
+

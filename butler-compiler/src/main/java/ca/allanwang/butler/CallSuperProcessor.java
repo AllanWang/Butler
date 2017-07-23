@@ -1,9 +1,14 @@
-package ca.allanwang.butler.callsuper;
+package ca.allanwang.butler;
 
 import ca.allanwang.butler.base.CodeScanner;
 import ca.allanwang.butler.base.MethodScannerProcessor;
+import com.google.auto.service.AutoService;
+import com.google.common.collect.ImmutableSet;
+import com.sun.source.util.TaskEvent;
+import com.sun.source.util.TaskListener;
 import com.sun.source.util.TreePath;
 import com.sun.tools.javac.tree.JCTree;
+import jdk.nashorn.internal.objects.annotations.*;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -19,15 +24,13 @@ import java.util.Set;
 /**
  * Created by Allan Wang on 2017-05-10.
  */
-@SupportedAnnotationTypes("java.lang.Override")
 @AutoService(Processor.class)
-public class CallSuperProcessor extends MethodScannerProcessor {
+public class CallSuperProcessor extends MethodScannerProcessor implements TaskListener {
 
     @Override
+    @jdk.nashorn.internal.objects.annotations.Getter
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println("HI");;
         for (Element e : roundEnv.getElementsAnnotatedWith(Override.class)) {
-            error(e);
             CodeScanner codeScanner = new CodeScanner();
             codeScanner.setMethodName(e.getSimpleName().toString());
             TreePath tp = trees.getPath(e.getEnclosingElement());
@@ -35,18 +38,13 @@ public class CallSuperProcessor extends MethodScannerProcessor {
 
             if (codeScanner.isCallSuperUsed()) {
                 List list = codeScanner.getMethod().getBody().getStatements();
-
                 if (!doesCallSuper(list, codeScanner.getMethodName())) {
-                    error(e);
+                    warn(e, "Overriding method should call super.%s", e.getSimpleName());
                 }
             }
         }
 
         return false;
-    }
-
-    private void error(Element e) {
-        processingEnv.getMessager().printMessage(Kind.ERROR, String.format("Overriding method should call super.%s", e.getSimpleName()), e);
     }
 
     private boolean doesCallSuper(List list, String methodName) {
@@ -62,7 +60,22 @@ public class CallSuperProcessor extends MethodScannerProcessor {
     }
 
     @Override
+    public Set<String> getSupportedAnnotationTypes() {
+        return ImmutableSet.of(Override.class.getName());
+    }
+
+    @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latest();
+    }
+
+    @Override
+    public void started(TaskEvent taskEvent) {
+
+    }
+
+    @Override
+    public void finished(TaskEvent taskEvent) {
+
     }
 }

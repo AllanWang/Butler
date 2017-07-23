@@ -1,0 +1,20 @@
+version 'unspecified'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile deps.lint.api
+    testCompile deps.junit
+}
+
+jar {
+    manifest {
+        attributes 'Lint-Registry': 'Butler.lint.LintRegistry'
+    }
+}
